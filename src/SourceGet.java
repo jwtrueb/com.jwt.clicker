@@ -1,7 +1,18 @@
 /**
  * File: SourceGet.java
  * 
- * @author Jacob Description: Gets the HTML source code from a website
+ * @author Jacob 
+ * Description: Connects to tigerview,
+ * 		Logs in
+ * 		gets HTML source of the classwork page
+ * 		manipulates that source to pull out the grades
+ * 
+ * 
+ * 		Things required for log in
+ * 		1. Username for tigerview
+ * 		2. Password for tigerview
+ * 		3. School student id
+ * 6.
  */
 
 import java.io.IOException;
@@ -31,12 +42,13 @@ public class SourceGet {
 		WebElement password = web.findElement(By
 				.id("ctl00_plnMain_txtPassword"));
 
+		//enters username and password into those blanks
 		username.sendKeys("t.trueb");
 		password.sendKeys("14850000");
 
 		System.out.println("log in element");
 		WebElement logIn = web.findElement(By.id("ctl00_plnMain_Submit1"));
-		logIn.click();
+		logIn.click(); //clicks the log in button
 
 		System.out.println("Page title is: " + web.getTitle());
 		
@@ -257,7 +269,7 @@ public class SourceGet {
 
 	/*
 	 * helper method that removes all the extra spacing of the String
-	 * 
+	 * NOTE: this only keeps letters and '/' everything else is removed
 	 */
 	private static String cleanUp(String dirty)
 	{
@@ -281,6 +293,13 @@ public class SourceGet {
 		System.out.println("///////////////////////////////////////////////");
 		
 		grades = getClassGrades();
+		
+		
+		/*
+		this has three ArrayLists that it is working with but the third
+		one could be removed and made into its own separate 'Assignment' class
+		
+		*/
 		System.out.println(grades.get(0).get(0).get(0));
 		System.out.println(grades.get(0).get(0).get(1));
 		System.out.println(grades.get(0).get(0).get(2));
