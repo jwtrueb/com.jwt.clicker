@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Clicker Questions</title>
+<script>
+var x = new XMLHttpRequest();
+x.open("GET","answers.txt",false);
+x.send();
+myTextFile=x.responseText; //this is the text that contains answers so far
+
+//format is as follows
+//a b c d e
+var answers = myTextFile.split(" ");
+var a = parseInt(answers[0]);
+var b = parseInt(answers[1]);
+var c = parseInt(answers[2]);
+var d = parseInt(answers[3]);
+var e = parseInt(answers[4]);
+var z = 1;
+
+/*
+ * adds one to a and puts it on the screen
+ */
+function aPress() {
+	a = a + 1;
+	document.getElementById("a").innerHTML="A = " + a;
+	document.getElementById("popular").innerHTML=popular() + " is the most popular answer!";
+	sendRequest("a");
+}
+
+/*
+ * adds one to b and puts it on the screen
+ */
+function bPress() {
+	b = b + 1;
+	document.getElementById("b").innerHTML="B = " + b;
+	document.getElementById("popular").innerHTML=popular() + " is the most popular answer!";
+	sendRequest("b");
+}
+
+/*
+ * adds one to c and puts it on the screen
+ */
+function cPress() {
+	c = c + 1;
+	document.getElementById("c").innerHTML="C = " + c;
+	document.getElementById("popular").innerHTML=popular() + " is the most popular answer!";
+	sendRequest("c");
+}
+
+/*
+ * adds one to d and puts it on the screen
+ */
+function dPress() {
+	d = d + 1;
+	document.getElementById("d").innerHTML="D = " + d;
+	document.getElementById("popular").innerHTML=popular() + " is the most popular answer!";
+	sendRequest("d");
+}
+
+/*
+ * adds one to e and puts it on the screen
+ */
+function ePress() {
+	e = e + 1;
+	document.getElementById("e").innerHTML="E = " + e;
+	document.getElementById("popular").innerHTML=popular() + " is the most popular answer!";
+	sendRequest("e");
+}
+ 
+/*
+ * checks to see if there is one value that is greater than any of the others
+ */
+function popular() {
+	if(a > b && a > c && a > d && a > e){
+		return "A";
+	}
+	else if(b > a && b > c && b > e){
+		return "B";
+	}
+	else if( c > a && c > b && c > d && c > e){
+		return "C";
+	}
+	else if(d > a && d > b && d > c && d > e){
+		return "D";
+	}
+	else if(e > a && e > b && e > c && e > d){
+		return "E";
+	}
+	else if(a == b && b == c && c == d && d == e){
+		return "A, B, C, D, and E";
+	}
+	else{
+		return "Either A, B, C, D, or E";
+// 		return equalVotes();
+	}
+}
+
+function equalVotes() {
+	var string = "";
+	if(a == b){
+		string = string + "A = B  ";
+	}
+	
+	if(b == c){
+		string = string + "B = C  ";
+	}
+	
+	if(c == d){
+		string = string + "C = D  ";
+	}
+	
+	if(d == e){
+		string = string + "D = E  ";
+	}
+	
+	if(a == c){
+		string = string + "A = C  ";
+	}
+	
+	if(a == d){
+		string = string + "A = D  ";
+	}
+	
+	if(a == e){
+		string = string + "A = E  ";
+	}
+	
+	if(b == d){
+		string = string + "B = D  ";
+	}
+	
+	if(b == e){
+		string = string + "B = E  ";
+	}
+	
+	return string;
+}
+
+/*
+ * resets a b c and d to zero, updates it to the screen, and 
+ * sends the answers.txt doc to the server for sync
+ */
+function resetCount(){
+	a = -1;
+	b = -1;
+	c = -1;
+	d = -1;
+	e = -1;
+	
+	aPress();
+	bPress();
+	cPress();
+	dPress();
+	ePress();
+	
+	answers = "reset";
+	sendRequest(answers);
+}
+
+function sendRequest(stringAns){
+	var reseter = XMLHttpRequest();
+	reseter.onreadystatechange=function()
+	  {
+	  if (reseter.readyState==4 && reseter.status==200)
+	    {
+		 //alert("You answered " + reseter.responseText);
+	    }
+
+	  }
+
+	var tackOn = "?answer=" + stringAns;
+	reseter.open("GET", "logAns.php" + tackOn, false);
+	
+	//reseter.setRequestHeader("Content-type", "aplication/x-www-form-urlencoded");
+	//reseter.setRequestHeader("Connection", "close");
+	reseter.send();
+}
+</script>
+</head>
+<body style="background-color: lightgray">
+
+	<p id="a" style="color: red">A's</p>
+	<form>
+		<input type="button" value="A" name="A" onclick="aPress()"> is
+		the answer
+	</form>
+
+	<p id="b" style="color: blue">B's</p>
+	<form>
+		<input type="button" value="B" name="B" onclick="bPress()"> is
+		the answer
+	</form>
+
+	<p id="c" style="color: green">C's</p>
+	<form>
+		<input type="button" value="C" name="C" onclick="cPress()"> is
+		the answer
+	</form>
+
+	<p id="d" style="color: purple">D's</p>
+	<form>
+		<input type="button" value="D" name="D" onclick="dPress()"> is
+		the answer
+	</form>
+
+	<p id="e" style="color: orange">E's</p>
+	<form>
+		<input type="button" value="E" name="E" onclick="ePress()"> is
+		the answer
+	</form>
+
+	<p>If you are Mr. Parker, you may click this button</p>
+	<form>
+		<input type="button" value="I am Mr. Parker" name="parker"
+			onclick="if(z==1){z=z-1; this.value='Reset Count';}else{resetCount()}">
+	</form>
+	<!-- 	<p id="popular">___ is the most selected answer</p> -->
+
+	<script>
+	document.getElementById("a").innerHTML="A = " + a;
+	document.getElementById("b").innerHTML="B = " + b;
+	document.getElementById("c").innerHTML="C = " + c;
+	document.getElementById("d").innerHTML="D = " + d;
+	document.getElementById("e").innerHTML="E = " + e;
+	
+	if(a == 0 && b == 0 && c == 0 && d == 0 && e == 0){
+		document.write("<p id='popular'>No one has answered yet ... ");
+	}
+	else {
+		document.write("<p id='popular'>" + popular() + " is the most selected answer</p>");
+	}
+	
+	</script>
+
+	<!-- 	<form><input type="button" value="Reset Count" name="reset" onclick="resetCount()"></form> -->
+
+</body>
+</html>
