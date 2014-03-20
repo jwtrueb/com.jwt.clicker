@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+/bin
+=======
 #################
 ## Eclipse
 #################
@@ -213,3 +216,4 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+>>>>>>> 5d2163d8061c3ab08c4c8a606aa0eb3eb3283217
