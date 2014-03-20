@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="45" >
 <title>Clicker Questions</title>
 <script>
 var x = new XMLHttpRequest();
@@ -18,6 +19,32 @@ var c = parseInt(answers[2]);
 var d = parseInt(answers[3]);
 var e = parseInt(answers[4]);
 var z = 1;
+
+/*
+ * supposed to update the voting count by pulling from the server
+ * but needs to update popular and vote blanks
+ * CURRENTLY NOT IN USE
+ */
+function updateAns(){
+    var x = new XMLHttpRequest();
+    x.open("GET","answers.txt",false);
+    x.send();
+    myTextFile=x.responseText; //this is the text that contains answers so far
+    //format is as follows
+    //a b c d e
+    answers = myTextFile.split(" ");
+    a = parseInt(answers[0]) - 1;
+    b = parseInt(answers[1]) - 1;
+    c = parseInt(answers[2]) - 1;
+    d = parseInt(answers[3]) - 1;
+    e = parseInt(answers[4]) - 1;
+
+    aPress();
+    bPress();
+    cPress();
+    dPress();
+    ePress();
+}
 
 /*
  * adds one to a and puts it on the screen
@@ -71,6 +98,7 @@ function ePress() {
  
 /*
  * checks to see if there is one value that is greater than any of the others
+ * @return a string that is the most popular choice
  */
 function popular() {
 	if(a > b && a > c && a > d && a > e){
@@ -97,6 +125,11 @@ function popular() {
 	}
 }
 
+/*
+ * 
+ * @returns a string with the choices that are ties
+ * CURRENTLY NOT IN USE
+ */
 function equalVotes() {
 	var string = "";
 	if(a == b){
@@ -160,7 +193,7 @@ function resetCount(){
 }
 
 function sendRequest(stringAns){
-	var reseter = XMLHttpRequest();
+	var reseter = new XMLHttpRequest();
 	reseter.onreadystatechange=function()
 	  {
 	  if (reseter.readyState==4 && reseter.status==200)
@@ -171,16 +204,42 @@ function sendRequest(stringAns){
 	  }
 
 	var tackOn = "?answer=" + stringAns;
-	reseter.open("GET", "logAns.php" + tackOn, false);
+	reseter.open("GET", "/ClickerPage/logAns.php" + tackOn, false);
 	
 	//reseter.setRequestHeader("Content-type", "aplication/x-www-form-urlencoded");
 	//reseter.setRequestHeader("Connection", "close");
 	reseter.send();
 }
 </script>
+<style>
+    #mainContent {
+        background-color: lightgray;
+        border: 2px inset black;
+        border-radius: 3px;
+        display: inline-block;
+        padding: 5px;
+        float: left;
+    }
+    
+    #popAns {
+        background-color: lightgray;
+        border: 2px inset black;
+        border-radius: 3px;
+        display: inline-block;
+        padding: 5px;
+        float: right;
+    }
+    
+    form {
+        display: inline;
+        border: 2px outset black;
+        padding: 4px;
+    }
+</style>
 </head>
-<body style="background-color: lightgray">
+<body style="background-color: #555555">
 
+   <div id="mainContent">
 	<p id="a" style="color: red">A's</p>
 	<form>
 		<input type="button" value="A" name="A" onclick="aPress()"> is
@@ -193,7 +252,7 @@ function sendRequest(stringAns){
 		the answer
 	</form>
 
-	<p id="c" style="color: green">C's</p>
+	<p id="c" style="color: magenta">C's</p>
 	<form>
 		<input type="button" value="C" name="C" onclick="cPress()"> is
 		the answer
@@ -205,7 +264,7 @@ function sendRequest(stringAns){
 		the answer
 	</form>
 
-	<p id="e" style="color: orange">E's</p>
+	<p id="e" style="color: darkcyan">E's</p>
 	<form>
 		<input type="button" value="E" name="E" onclick="ePress()"> is
 		the answer
@@ -218,6 +277,13 @@ function sendRequest(stringAns){
 	</form>
 	<!-- 	<p id="popular">___ is the most selected answer</p> -->
 
+        <p style="clear: both" id="clock">Seconds since last refresh: 0</p>
+   </div>
+    
+    
+   <div id="popAns">
+            <p id="popular"></p>
+   </div>
 	<script>
 	document.getElementById("a").innerHTML="A = " + a;
 	document.getElementById("b").innerHTML="B = " + b;
@@ -226,15 +292,25 @@ function sendRequest(stringAns){
 	document.getElementById("e").innerHTML="E = " + e;
 	
 	if(a == 0 && b == 0 && c == 0 && d == 0 && e == 0){
-		document.write("<p id='popular'>No one has answered yet ... ");
+		document.getElementById("popular").innerHTML="No one has answered yet ... ";
 	}
 	else {
-		document.write("<p id='popular'>" + popular() + " is the most selected answer</p>");
+		document.getElementById("popular").innerHTML=popular() + " is the most selected answer";
 	}
-	
+        
+       var start = 0;
+        function time(){
+            start += 1;
+            document.getElementById("clock").innerHTML="Seconds since last refresh: " + start;
+        
+            if(start == 10){
+                //updateAns();
+                location.reload();
+            }
+            setTimeout("time()", "1000");
+        }
+        
+        time();
 	</script>
-
-	<!-- 	<form><input type="button" value="Reset Count" name="reset" onclick="resetCount()"></form> -->
-
 </body>
 </html>
