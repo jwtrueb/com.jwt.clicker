@@ -12,7 +12,7 @@
 	}
 	else if("b" == $answer){
 		$oldAbcd[1] += 1;
-	}
+	} 
 	else if("c" == $answer){
 		$oldAbcd[2] += 1;
 	}	
