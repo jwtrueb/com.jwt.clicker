@@ -29,7 +29,7 @@
 		$oldAbcd[3] = 0;
 		$oldAbcd[4] = 0;
 	}
-	
+	 
 	$string = "{$oldAbcd[0]} {$oldAbcd[1]} {$oldAbcd[2]} {$oldAbcd[3]} {$oldAbcd[4]}"; 
 	fwrite($f, $string);
         //fwrite($f, "10 8 7 3 4");
