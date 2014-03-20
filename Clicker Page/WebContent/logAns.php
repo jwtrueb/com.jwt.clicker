@@ -21,7 +21,7 @@
 	}
 	else if("e" == $answer){
 		$oldAbcd[4] += 1;
-	}  
+	}   
 	else{
 		$oldAbcd[0] = 0;
 		$oldAbcd[1] = 0;
