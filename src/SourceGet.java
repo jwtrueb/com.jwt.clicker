@@ -240,8 +240,8 @@ public class SourceGet {
 					System.out.println("OutOf: "+piece);
 					outOf = Double.parseDouble(piece);
 				}
-				else
-					System.out.println(piece);
+				else;
+//					System.out.println(piece);
 			}
 		}
 		
@@ -251,6 +251,7 @@ public class SourceGet {
 		assignment.add(outOf);
 		if(score != null && outOf != null)
 			assignment.add((new Double(score / outOf * 100.0) + "%"));
+		System.out.println("");
 		return assignment;
 	}
 	
@@ -300,10 +301,10 @@ public class SourceGet {
 		one could be removed and made into its own separate 'Assignment' class
 		
 		*/
-		System.out.println(grades.get(0).get(0).get(0));
-		System.out.println(grades.get(0).get(0).get(1));
-		System.out.println(grades.get(0).get(0).get(2));
-		System.out.println(grades.get(0).get(0).get(3));
+		System.out.println(grades.get(4).get(0).get(0));
+		System.out.println(grades.get(4).get(0).get(1));
+		System.out.println(grades.get(4).get(0).get(2));
+		System.out.println(grades.get(4).get(0).get(3));
 		
 	}
 }
